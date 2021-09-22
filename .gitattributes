@@ -1,0 +1,9 @@
+#Based on: https://help.github.com/en/github/using-git/configuring-git-to-handle-line-endings
+
+#Set the default CRLF behaviour, in case people don't have core.autocrlf set.
+* text=auto eol=lf
+
+*.cs text
+*.import text
+*.godot text
+*.csproj text
