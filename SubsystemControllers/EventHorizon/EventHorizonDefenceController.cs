@@ -45,7 +45,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
         if the collision boxes will intersect, it's possible that the intersection found by the function
         is not the first instance of intersection (but it should be close unless the collision boxes are huge).
     */
-    public float timeToCollide(Vector2 position, Vector2 velocity, float collisionRadius) {
+    public float timeToCollide(Vector2 position, Vector2 velocity, float collisionRadius = 50f) {
         // Loop around various points on the collision circle of the asteroid and ship
         // to check if a collision will occur.
 
@@ -75,10 +75,18 @@ public class EventHorizonDefenceController : AbstractDefenceController
                     return timeX;
                 }
             }
-        }
-        
+        } 
         // If no points in the circle will ever intersect with each other, return positive infinity
         return float.PositiveInfinity;
+    }
+
+    /*
+        Takes the relative position of the asteroid and the absolute
+        velocity to calculate the next target for the turret.
+    */
+    public Vector2 getNextTargetVector(Vector2 position, Vector2 velocity) {
+        
+
     }
 
     public override void DebugDraw(Font font)
