@@ -11,6 +11,8 @@ public class EventHorizonSensorsController : AbstractSensorsController
     public override void SensorsUpdate(ShipStatusInfo shipStatusInfo, IActiveSensors activeSensors, PassiveSensors passiveSensors, float deltaTime)
     {
         //Student code goes here   
+
+        print("ur mom");
     }
 
     public override void DebugDraw(Font font)
