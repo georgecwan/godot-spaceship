@@ -1,19 +1,55 @@
-﻿<Project Sdk="Godot.NET.Sdk/3.3.0">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Tools</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8C359B6F-D12B-402A-9044-5FE7E9A74FF3}</ProjectGuid>
     <OutputType>Library</OutputType>
+    <OutputPath>.mono\temp\bin\$(Configuration)</OutputPath>
     <RootNamespace>SpaceshipCollaborationActivity</RootNamespace>
     <AssemblyName>Spaceship Collaboration Activity</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <GodotProjectGeneratorVersion>1.0.7374.16792</GodotProjectGeneratorVersion>
-    <TargetFramework>net472</TargetFramework>
-    <!--The following properties were overridden during migration to prevent errors.
-    Enabling them may require other manual changes to the project and its files.-->
-    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <Deterministic>false</Deterministic>
+    <BaseIntermediateOutputPath>.mono\temp\obj</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)\$(Configuration)</IntermediateOutputPath>
+    <ApiConfiguration Condition=" '$(Configuration)' != 'Release' ">Debug</ApiConfiguration>
+    <ApiConfiguration Condition=" '$(Configuration)' == 'Release' ">Release</ApiConfiguration>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>$(GodotDefineConstants);GODOT;DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>portable</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>$(GodotDefineConstants);GODOT;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Tools|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>$(GodotDefineConstants);GODOT;DEBUG;TOOLS;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GodotSharp">
+      <Private>False</Private>
+      <HintPath>$(ProjectDir)/.mono/assemblies/$(ApiConfiguration)/GodotSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="GodotSharpEditor" Condition=" '$(Configuration)' == 'Tools' ">
+      <Private>False</Private>
+      <HintPath>$(ProjectDir)/.mono/assemblies/$(ApiConfiguration)/GodotSharpEditor.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
@@ -113,37 +149,38 @@
     <Compile Include="SubsystemControllers\Nostromo\NostromoNavigationController.cs" />
     <Compile Include="SubsystemControllers\Nostromo\NostromoPropulsionController.cs" />
     <Compile Include="SubsystemControllers\Nostromo\NostromoSensorsController.cs" />
-    <!--     <Compile Include="SubsystemControllers\PillarOfAutumn\PillarOfAutumnDefenceController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\PillarOfAutumn\PillarOfAutumnNavigationController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\PillarOfAutumn\PillarOfAutumnPropulsionController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\PillarOfAutumn\PillarOfAutumnSensorsController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\PlanetExpress\PlanetExpressDefenceController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\PlanetExpress\PlanetExpressNavigationController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\PlanetExpress\PlanetExpressPropulsionController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\PlanetExpress\PlanetExpressSensorsController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Rama\RamaDefenceController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Rama\RamaNavigationController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Rama\RamaPropulsionController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Rama\RamaSensorsController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\RedDwarf\RedDwarfDefenceController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\RedDwarf\RedDwarfNavigationController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\RedDwarf\RedDwarfPropulsionController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\RedDwarf\RedDwarfSensorsController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\SSAnne\SSAnneDefenceController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\SSAnne\SSAnneNavigationController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\SSAnne\SSAnnePropulsionController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\SSAnne\SSAnneSensorsController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Serenity\SerenityDefenceController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Serenity\SerenityNavigationController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Serenity\SerenityPropulsionController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Serenity\SerenitySensorsController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Thunderbird3\Thunderbird3DefenceController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Thunderbird3\Thunderbird3NavigationController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Thunderbird3\Thunderbird3PropulsionController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Thunderbird3\Thunderbird3SensorsController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Yamato\YamatoDefenceController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Yamato\YamatoNavigationController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Yamato\YamatoPropulsionController.cs" /> -->
-    <!--     <Compile Include="SubsystemControllers\Yamato\YamatoSensorsController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\PillarOfAutumn\PillarOfAutumnDefenceController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\PillarOfAutumn\PillarOfAutumnNavigationController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\PillarOfAutumn\PillarOfAutumnPropulsionController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\PillarOfAutumn\PillarOfAutumnSensorsController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\PlanetExpress\PlanetExpressDefenceController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\PlanetExpress\PlanetExpressNavigationController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\PlanetExpress\PlanetExpressPropulsionController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\PlanetExpress\PlanetExpressSensorsController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Rama\RamaDefenceController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Rama\RamaNavigationController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Rama\RamaPropulsionController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Rama\RamaSensorsController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\RedDwarf\RedDwarfDefenceController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\RedDwarf\RedDwarfNavigationController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\RedDwarf\RedDwarfPropulsionController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\RedDwarf\RedDwarfSensorsController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\SSAnne\SSAnneDefenceController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\SSAnne\SSAnneNavigationController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\SSAnne\SSAnnePropulsionController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\SSAnne\SSAnneSensorsController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Serenity\SerenityDefenceController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Serenity\SerenityNavigationController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Serenity\SerenityPropulsionController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Serenity\SerenitySensorsController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Thunderbird3\Thunderbird3DefenceController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Thunderbird3\Thunderbird3NavigationController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Thunderbird3\Thunderbird3PropulsionController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Thunderbird3\Thunderbird3SensorsController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Yamato\YamatoDefenceController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Yamato\YamatoNavigationController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Yamato\YamatoPropulsionController.cs" /> -->
+<!--     <Compile Include="SubsystemControllers\Yamato\YamatoSensorsController.cs" /> -->
   </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
