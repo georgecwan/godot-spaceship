@@ -10,7 +10,8 @@ bg_color = Color( 0, 0, 0, 0.196078 )
 
 [node name="GameCore" type="Node"]
 script = ExtResource( 1 )
-startFocusedOnShip = 1
+simulationMode = 1
+startFocusedOnShip = 4
 
 [node name="GameObjectsRoot" type="Node2D" parent="."]
 
