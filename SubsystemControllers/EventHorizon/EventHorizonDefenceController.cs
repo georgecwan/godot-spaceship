@@ -28,6 +28,8 @@ public class EventHorizonDefenceController : AbstractDefenceController
         speed = Torpedo.LaunchSpeed;
         explosionRadius = Torpedo.ExplosionRadius;
         // List<Asteroid> = EventHorizonSensorsController.asteroidsList;
+
+        shootTorpedoes(turretControls);
     }
 
     /*
@@ -84,11 +86,33 @@ public class EventHorizonDefenceController : AbstractDefenceController
         Takes the relative position of the asteroid and the absolute
         velocity to calculate the next target for the turret.
     */
-    public Vector2 getNextTargetVector(Vector2 position, Vector2 velocity) {
+    // public Vector2 getNextTargetVector(Vector2 position, Vector2 velocity) {
         
 
-    }
+    // }
 
+    public void shootTorpedoes(TurretControls turretControls) 
+    {
+        // turretControls.aimTo = ; // will call function that Jason makes
+        turretControls.TriggerTube(readyTube(turretControls), 0.5f);
+    }
+    
+    public int readyTube(TurretControls turretControls) 
+    {
+        
+        // Loops through tubes to check which one is ready
+        for(int i = 0; i < 4; i++)
+        {
+            // TurretControls tc = new TurretControls();
+            float tubeCooldown = turretControls.GetTubeCooldown(i);
+            GD.Print(tubeCooldown); 
+            if(tubeCooldown==0)
+            {
+                return i; 
+            }
+        }
+        return 4; // 4 represents that no tubes are ready
+    }
     public override void DebugDraw(Font font)
     {
         
