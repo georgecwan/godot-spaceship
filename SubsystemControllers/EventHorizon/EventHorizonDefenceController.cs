@@ -10,8 +10,18 @@ public class EventHorizonDefenceController : AbstractDefenceController
     Vector2 shipCoordinates;
     Vector2 shipVelocity;
     float shipCollisionRadius;  // Hardcoded to 30.8946f
-    float speed = Torpedo.LaunchSpeed;
-    float explosionRadius = Torpedo.ExplosionRadius;
+    float speed = Torpedo.LaunchSpeed;  // Hardcoded to 600f
+    float explosionRadius = Torpedo.ExplosionRadius;  // Hardcoded to 150f
+    
+    /*
+        A list of asteroids compiled by sensors. Each element will contain:
+         - Asteroid position (Vector2)
+         - Asteroid velocity (Vector2)
+         - Asteroid radius (float)
+         - Asteroid distance (float)
+
+        The list will be sorted by increasing distance.
+    */
     List<AsteroidData> asteroidList;
     
     public override void DefenceUpdate(ShipStatusInfo shipStatusInfo, TurretControls turretControls, float deltaTime)
