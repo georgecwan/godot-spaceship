@@ -33,7 +33,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
 
         // TODO: Get target direction vector
         // Currently set to a random direction
-        (Vector2 direction, float time) = getNextTargetVector(null);
+        (Vector2 direction, float time) = getTargetVector(null);
 
         shootTorpedoes(turretControls, direction, time);
     }
@@ -97,7 +97,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
         velocity to calculate the next target vector for the turret,
         relative to the turret, and the time it takes before it hits.
     */
-    public (Vector2, float) getNextTargetVector(AsteroidData? data)
+    public (Vector2, float) getTargetVector(AsteroidData? data)
     {
         Random random = new System.Random();
         Vector2 direction = new Vector2((float) (random.NextDouble() - 0.5), (float) (random.NextDouble() - 0.5));
@@ -106,15 +106,18 @@ public class EventHorizonDefenceController : AbstractDefenceController
     }
     
     /*
-    Fires a single torpedo towards the given relative direction with the given time.
+        Fires a single torpedo towards the given relative direction with the given time.
     */
     public void shootTorpedoes(TurretControls turretControls, Vector2 relativeDirection, float fuseTime) 
     {
         turretControls.aimTo = shipCoordinates + relativeDirection;  // Aiming in random directions
-        turretControls.TriggerTube(readyTube(turretControls), fuseTime); //change time to collide
+        turretControls.TriggerTube(readyTube(turretControls), fuseTime); // Change time to collide
         
     }
     
+    /*
+        Returns the index of the first tube that is ready to fire.
+    */
     public int readyTube(TurretControls turretControls) 
     {
         
@@ -123,7 +126,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
         {
             // TurretControls tc = new TurretControls();
             float tubeCooldown = turretControls.GetTubeCooldown(i);
-            GD.Print(tubeCooldown); 
+            // GD.Print(tubeCooldown); 
             if(tubeCooldown == 0)
             {
                 return i; 
