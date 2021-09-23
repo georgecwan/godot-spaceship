@@ -24,20 +24,24 @@ public class EventHorizonSensorsController : AbstractSensorsController
 		foreach(EMSReading a in asteroidRawData) {
 			if (a.ScanSignature != "Rock:90|Common:10")
 				continue;
-
+			
+			// Calculate the position of the asteroid in cartesian coordinates
 			float x = (float)Math.Cos(a.Angle) * a.Amplitude * activeSensors.GConstant;
 			float y = (float)Math.Sin(a.Angle) * a.Amplitude * activeSensors.GConstant;
 
+			// Calculate the distance of the asteroid relative to the spaceship
 			float dist = (float)Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 			
 			AsteroidData newAsteroid = new AsteroidData(new Vector2(x, y), a.Velocity, a.Radius, dist);
 
+			// Sort the asteroids by distance using insertion sort
 			bool flag = false;
 			for (int i = 0; i < asteroidList.Count; i++) {
 				AsteroidData ass = asteroidList[i];
 				if (dist <= ass.distance) {
 					asteroidList.Insert(i, newAsteroid);
 					flag = true;
+					break;
 				}
 			}
 
@@ -45,13 +49,6 @@ public class EventHorizonSensorsController : AbstractSensorsController
 				asteroidList.Add(newAsteroid);
 			}
 		}
-		string printing = "";
-		for (int i = 0; i < asteroidList.Count; i++) {
-			AsteroidData ass = asteroidList[i];
-			printing += (ass.distance.ToString() + " ");
-		}
-		GD.Print(printing);
-		
 	}
 
 	public override void DebugDraw(Font font)
