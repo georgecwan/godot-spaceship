@@ -60,8 +60,8 @@ public class EventHorizonDefenceController : AbstractDefenceController
             for (double b = 0; b < 2 * Math.PI; b += 0.1) {
                 // Break down x and y components of the ships's position vector (center = 0,0),
                 // for every rotation around the collision circle
-                float shipX = shipCollisionRadius * (float) Math.Cos(b);
-                float shipY = shipCollisionRadius * (float) Math.Sin(b);
+                float shipX = (float) ((double) shipCollisionRadius *  Math.Cos(b));
+                float shipY = (float) ((double) shipCollisionRadius *  Math.Sin(b));
 
                 // Calculate the time for each component to collide
                 float timeX = (shipX - asteroidX) / (velocity.x - shipVelocity.x);
