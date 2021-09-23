@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public class EventHorizonDefenceController : AbstractDefenceController
 {
@@ -11,6 +12,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
     float shipCollisionRadius;  // Hardcoded to 30.8946f
     float speed = Torpedo.LaunchSpeed;
     float explosionRadius = Torpedo.ExplosionRadius;
+    List<AsteroidData> asteroidList;
     
     public override void DefenceUpdate(ShipStatusInfo shipStatusInfo, TurretControls turretControls, float deltaTime)
     {
@@ -20,9 +22,14 @@ public class EventHorizonDefenceController : AbstractDefenceController
 
         speed = Torpedo.LaunchSpeed;
         explosionRadius = Torpedo.ExplosionRadius;
-        // List<Asteroid> = EventHorizonSensorsController.asteroidsList;
 
         shootTorpedoes(turretControls);
+
+        asteroidList = SensorsController.asteroidList;
+
+        foreach (AsteroidData data in asteroidList) {
+            float time = timeToCollide(data);
+        }
     }
 
     /*
@@ -40,7 +47,10 @@ public class EventHorizonDefenceController : AbstractDefenceController
         if the collision boxes will intersect, it's possible that the intersection found by the function
         is not the first instance of intersection (but it should be close unless the collision boxes are huge).
     */
-    public float timeToCollide(Vector2 position, Vector2 velocity, float collisionRadius = 50f) {
+    public float timeToCollide(AsteroidData data) {
+        Vector2 position = data.position;
+        Vector2 velocity = data.velocity;
+        float collisionRadius = data.radius;
         // Loop around various points on the collision circle of the asteroid and ship
         // to check if a collision will occur.
 

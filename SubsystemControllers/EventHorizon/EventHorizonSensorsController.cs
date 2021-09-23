@@ -47,9 +47,9 @@ public class EventHorizonSensorsController : AbstractSensorsController
 }
 
 public struct AsteroidData {
-	Vector2 position;
-	Vector2 velocity;
-	float radius;
+	public Vector2 position;
+	public Vector2 velocity;
+	public float radius;
 
 	public AsteroidData(Vector2 p, Vector2 v, float r) {
 		position = p;
