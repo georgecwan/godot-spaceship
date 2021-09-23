@@ -8,10 +8,14 @@ public class EventHorizonSensorsController : AbstractSensorsController
 	EventHorizonPropulsionController PropulsionController {get{return parentShip.PropulsionController as EventHorizonPropulsionController;}}    
 	EventHorizonDefenceController DefenceController {get{return parentShip.DefenceController as EventHorizonDefenceController;}}
 
+	public List<EMSReading> asteroidList = new List<EMSReading>(); 
+
 	public override void SensorsUpdate(ShipStatusInfo shipStatusInfo, IActiveSensors activeSensors, PassiveSensors passiveSensors, float deltaTime)
 	{
 		//Student code goes here   
-
+		asteroidList = activeSensors.PerformScan(0, 360, 100);
+		if (asteroidList.Count > 0) 
+			GD.Print(asteroidList[0].Amplitude);
 		
 	}
 
