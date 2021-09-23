@@ -93,7 +93,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
 
     public void shootTorpedoes(TurretControls turretControls) 
     {
-        // turretControls.aimTo = ; // will call function that Jason makes
+        turretControls.aimTo = shipCoordinates + new Vector2(1, 0);  // Always aim straight right
         turretControls.TriggerTube(readyTube(turretControls), 0.5f);
     }
     
