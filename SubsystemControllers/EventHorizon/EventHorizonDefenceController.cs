@@ -61,19 +61,17 @@ public class EventHorizonDefenceController : AbstractDefenceController
         // Loop around various points on the collision circle of the asteroid and ship
         // to check if a collision will occur.
 
-        // Originally, my idea was to simply check if the center of the ship and the center of the asteroid would collide,
-        // but I completely forgot about the collision radius.
-        for (double a = 0; a < 2 * Math.PI; a += 0.1) {
+        for (float a = 0; a < 2 * Mathf.Pi; a += 0.1f) {
             // Break down x and y components of the asteroid's position vector,
             // for every rotation around the collision circle
-            float asteroidX = (float) ((double) position.x + (double) collisionRadius * Math.Cos(a));
-            float asteroidY = (float) ((double) position.y + (double) collisionRadius * Math.Sin(a));
+            float asteroidX = position.x + collisionRadius * Mathf.Cos(a);
+            float asteroidY = position.y + collisionRadius * Mathf.Sin(a);
 
-            for (double b = 0; b < 2 * Math.PI; b += 0.1) {
+            for (float b = 0; b < 2 * Mathf.Pi; b += 0.1f) {
                 // Break down x and y components of the ships's position vector (center = 0,0),
                 // for every rotation around the collision circle
-                float shipX = (float) ((double) shipCollisionRadius *  Math.Cos(b));
-                float shipY = (float) ((double) shipCollisionRadius *  Math.Sin(b));
+                float shipX = shipCollisionRadius *  Mathf.Cos(b);
+                float shipY = shipCollisionRadius *  Mathf.Sin(b);
 
                 // Calculate the time for each component to collide
                 float timeX = (shipX - asteroidX) / (velocity.x - shipVelocity.x);
@@ -83,7 +81,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
                 // If the times are close enough, return the time before collision
                 float tolerance = 0.0001f;
                 
-                if (Math.Abs(timeX - timeY) <= tolerance) {
+                if (Mathf.Abs(timeX - timeY) <= tolerance) {
                     return timeX;
                 }
             }
