@@ -8,7 +8,18 @@ public class EventHorizonDefenceController : AbstractDefenceController
     EventHorizonPropulsionController PropulsionController {get{return parentShip.PropulsionController as EventHorizonPropulsionController;}}    
     public override void DefenceUpdate(ShipStatusInfo shipStatusInfo, TurretControls turretControls, float deltaTime)
     {
-        //Student code goes here
+        Vector2 shipCoordinates = shipStatusInfo.positionWithinSystem;
+        Vector2 shipVelocity = shipStatusInfo.linearVelocity;
+        float[] tubeCooldowns = new float[] {
+            turretControls.GetTubeCooldown(0),
+            turretControls.GetTubeCooldown(1),
+            turretControls.GetTubeCooldown(2),
+            turretControls.GetTubeCooldown(3),
+        };
+
+        float speed = Torpedo.LaunchSpeed;
+        float explosionRadius = Torpedo.ExplosionRadius;
+        // List<Asteroid> = EventHorizonSensorsController.asteroidsList;
     }
 
     public override void DebugDraw(Font font)
