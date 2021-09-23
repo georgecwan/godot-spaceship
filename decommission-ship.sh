@@ -6,6 +6,7 @@ exit
 
 for ship in $*
 do
+    echo "Decommissioning: $ship ..."
     # comment out lines that mention the ship
     sed -i -e "s/\(.*$ship.*\)/<!-- \1 -->/" \
         'Spaceship Collaboration Activity.csproj' 
