@@ -15,7 +15,6 @@ public class EventHorizonSensorsController : AbstractSensorsController
 	public override void SensorsUpdate(ShipStatusInfo shipStatusInfo, IActiveSensors activeSensors, PassiveSensors passiveSensors, float deltaTime)
 	{
 		asteroidList.Clear();
-
 		//Student code goes here   
 		asteroidRawData = activeSensors.PerformScan(0, 360, 500);
 
@@ -28,15 +27,30 @@ public class EventHorizonSensorsController : AbstractSensorsController
 
 			float x = (float)Math.Cos(a.Angle) * a.Amplitude * activeSensors.GConstant;
 			float y = (float)Math.Sin(a.Angle) * a.Amplitude * activeSensors.GConstant;
-			
-			AsteroidData newAsteroid = new AsteroidData(new Vector2(x, y), a.Velocity, a.Radius);
-			asteroidList.Add(newAsteroid);
-		}
 
-		// 
-		try {
-		GD.Print(asteroidList.Count);
-		} catch {}
+			float dist = (float)Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
+			
+			AsteroidData newAsteroid = new AsteroidData(new Vector2(x, y), a.Velocity, a.Radius, dist);
+
+			bool flag = false;
+			for (int i = 0; i < asteroidList.Count; i++) {
+				AsteroidData ass = asteroidList[i];
+				if (dist <= ass.distance) {
+					asteroidList.Insert(i, newAsteroid);
+					flag = true;
+				}
+			}
+
+			if (!flag) {
+				asteroidList.Add(newAsteroid);
+			}
+		}
+		string printing = "";
+		for (int i = 0; i < asteroidList.Count; i++) {
+			AsteroidData ass = asteroidList[i];
+			printing += (ass.distance.ToString() + " ");
+		}
+		GD.Print(printing);
 		
 	}
 
@@ -47,13 +61,15 @@ public class EventHorizonSensorsController : AbstractSensorsController
 }
 
 public struct AsteroidData {
-	Vector2 position;
-	Vector2 velocity;
-	float radius;
+	public Vector2 position;
+	public Vector2 velocity;
+	public float radius;
+	public float distance;
 
-	public AsteroidData(Vector2 p, Vector2 v, float r) {
+	public AsteroidData(Vector2 p, Vector2 v, float r, float d) {
 		position = p;
 		velocity = v;
 		radius = r;
+		distance = d;
 	}
 }
