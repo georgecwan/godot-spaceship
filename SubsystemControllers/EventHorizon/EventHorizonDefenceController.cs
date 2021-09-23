@@ -28,6 +28,8 @@ public class EventHorizonDefenceController : AbstractDefenceController
         speed = Torpedo.LaunchSpeed;
         explosionRadius = Torpedo.ExplosionRadius;
         // List<Asteroid> = EventHorizonSensorsController.asteroidsList;
+
+        shootTorpedoes(turretControls);
     }
 
     /*
@@ -81,20 +83,20 @@ public class EventHorizonDefenceController : AbstractDefenceController
         return float.PositiveInfinity;
     }
 
-    /*
-    public void shootTorpedoes() 
+    public void shootTorpedoes(TurretControls turretControls) 
     {
         // turretControls.aimTo = ; // will call function that Jason makes
-        turretControls.TriggerTube(readyTube, timeToCollide);
+        turretControls.TriggerTube(readyTube(turretControls), 0.5f);
     }
     
-
-    public float readyTube() 
+    public int readyTube(TurretControls turretControls) 
     {
+        
         // Loops through tubes to check which one is ready
         for(int i = 0; i < 4; i++)
         {
-            float tubeCooldown = turretControls.getTubeCooldown(i);
+            // TurretControls tc = new TurretControls();
+            float tubeCooldown = turretControls.GetTubeCooldown(i);
             GD.Print(tubeCooldown); 
             if(tubeCooldown==0)
             {
@@ -103,7 +105,6 @@ public class EventHorizonDefenceController : AbstractDefenceController
         }
         return 4; // 4 represents that no tubes are ready
     }
-    */
     public override void DebugDraw(Font font)
     {
         
