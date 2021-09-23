@@ -88,6 +88,8 @@ public class EventHorizonDefenceController : AbstractDefenceController
     /*
         Takes the relative position of the asteroid and the absolute
         velocity to calculate the next target for the turret.
+
+        Note: The turret.aimTo field takes an absolute vector, not a relative one.
     */
     // public Vector2 getNextTargetVector(Vector2 position, Vector2 velocity) {
         
@@ -109,7 +111,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
         {
             // TurretControls tc = new TurretControls();
             float tubeCooldown = turretControls.GetTubeCooldown(i);
-            GD.Print(tubeCooldown); 
+            // GD.Print(tubeCooldown); 
             if(tubeCooldown==0)
             {
                 return i; 
