@@ -16,20 +16,26 @@ public class EventHorizonDefenceController : AbstractDefenceController
     
     public override void DefenceUpdate(ShipStatusInfo shipStatusInfo, TurretControls turretControls, float deltaTime)
     {
+        // Initialize global variables
         shipCoordinates = shipStatusInfo.positionWithinSystem;
         shipVelocity = shipStatusInfo.linearVelocity;
         shipCollisionRadius = shipStatusInfo.shipCollisionRadius;
-
         speed = Torpedo.LaunchSpeed;
         explosionRadius = Torpedo.ExplosionRadius;
-
-        shootTorpedoes(turretControls);
-
         asteroidList = SensorsController.asteroidList;
 
+        AsteroidData target;
+        // TODO: create prioritization algorithm to calculate next shot
         foreach (AsteroidData data in asteroidList) {
-            float time = timeToCollide(data);
+            float collisionTime = timeToCollide(data);
+            // target = data
         }
+
+        // TODO: Get target direction vector
+        // Currently set to a random direction
+        (Vector2 direction, float time) = getNextTargetVector(null);
+
+        shootTorpedoes(turretControls, direction, time);
     }
 
     /*
@@ -47,7 +53,8 @@ public class EventHorizonDefenceController : AbstractDefenceController
         if the collision boxes will intersect, it's possible that the intersection found by the function
         is not the first instance of intersection (but it should be close unless the collision boxes are huge).
     */
-    public float timeToCollide(AsteroidData data) {
+    public float timeToCollide(AsteroidData data)
+    {
         Vector2 position = data.position;
         Vector2 velocity = data.velocity;
         float collisionRadius = data.radius;
@@ -87,18 +94,24 @@ public class EventHorizonDefenceController : AbstractDefenceController
 
     /*
         Takes the relative position of the asteroid and the absolute
-        velocity to calculate the next target for the turret.
+        velocity to calculate the next target vector for the turret,
+        relative to the turret, and the time it takes before it hits.
     */
-    // public Vector2 getNextTargetVector(Vector2 position, Vector2 velocity) {
-        
-
-    // }
-
-    public void shootTorpedoes(TurretControls turretControls) 
+    public (Vector2, float) getNextTargetVector(AsteroidData? data)
     {
-        System.Random random = new System.Random(); 
-        turretControls.aimTo = shipCoordinates + new Vector2(random.Next(-50, 50), random.Next(-50, 50));  // Aiming in random directions
-        turretControls.TriggerTube(readyTube(turretControls), 0.5f); //change time to collide
+        Random random = new System.Random();
+        Vector2 direction = new Vector2((float) (random.NextDouble() - 0.5), (float) (random.NextDouble() - 0.5));
+        float time = (float) random.NextDouble() * 10;
+        return (direction, time);
+    }
+    
+    /*
+    Fires a single torpedo towards the given relative direction with the given time.
+    */
+    public void shootTorpedoes(TurretControls turretControls, Vector2 relativeDirection, float fuseTime) 
+    {
+        turretControls.aimTo = shipCoordinates + relativeDirection;  // Aiming in random directions
+        turretControls.TriggerTube(readyTube(turretControls), fuseTime); //change time to collide
         
     }
     
@@ -111,7 +124,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
             // TurretControls tc = new TurretControls();
             float tubeCooldown = turretControls.GetTubeCooldown(i);
             GD.Print(tubeCooldown); 
-            if(tubeCooldown==0)
+            if(tubeCooldown == 0)
             {
                 return i; 
             }
