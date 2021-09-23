@@ -81,18 +81,26 @@ public class EventHorizonDefenceController : AbstractDefenceController
         return float.PositiveInfinity;
     }
 
-    /*
+    
     public void shootTorpedoes() 
     {
         // turretControls.aimTo = ; // will call function that Jason makes
         TurretControls.TriggerTube(readyTube, timeToCollide);
     }
+    
 
     public int readyTube() 
     {
-        
+        //Loops thugh tubes to check which is ready
+        for(int i=0; a<3; a++){
+            float tubeCooldown = turretControls.getTubeCooldown(i);
+            GD.Print(tubeCooldown); 
+            if(tubeCooldown==0){
+                return i; 
+            }
+        }
     }
-    */
+    
     public override void DebugDraw(Font font)
     {
         
