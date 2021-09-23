@@ -9,8 +9,8 @@ public class EventHorizonDefenceController : AbstractDefenceController
     float[] tubeCooldowns;
     Vector2 shipCoordinates;
     Vector2 shipVelocity;
-    float speed;
-    float explosionRadius;
+    float speed = Torpedo.LaunchSpeed;
+    float explosionRadius = Torpedo.ExplosionRadius;
     
     public override void DefenceUpdate(ShipStatusInfo shipStatusInfo, TurretControls turretControls, float deltaTime)
     {
@@ -30,6 +30,6 @@ public class EventHorizonDefenceController : AbstractDefenceController
 
     public override void DebugDraw(Font font)
     {
-
+        
     }
 }
