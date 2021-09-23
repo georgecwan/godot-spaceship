@@ -96,7 +96,8 @@ public class EventHorizonDefenceController : AbstractDefenceController
 
     public void shootTorpedoes(TurretControls turretControls) 
     {
-        turretControls.aimTo = shipCoordinates + new Vector2(1, 0);  // Always aim straight right
+        System.Random random = new System.Random(); 
+        turretControls.aimTo = shipCoordinates + new Vector2(random.Next(-50, 50), random.Next(-50, 50));  // Aiming in random directions
         turretControls.TriggerTube(readyTube(turretControls), 0.5f); //change time to collide
         
     }
