@@ -11,10 +11,10 @@ public class EventHorizonDefenceController : AbstractDefenceController
     Vector2 shipVelocity;
     float shipCollisionRadius;  // Hardcoded to 30.8946f
     float speed = Torpedo.LaunchSpeed;  // Hardcoded to 600f
-    float explosionRadius = Torpedo.ExplosionRadius;  // Hardcoded to 150f
     
     /*
         A list of asteroids compiled by sensors. Each element will contain:
+         - Asteroid id (ulong)
          - Asteroid position (Vector2)
          - Asteroid velocity (Vector2)
          - Asteroid radius (float)
@@ -37,8 +37,6 @@ public class EventHorizonDefenceController : AbstractDefenceController
         shipCoordinates = shipStatusInfo.positionWithinSystem;
         shipVelocity = shipStatusInfo.linearVelocity;
         shipCollisionRadius = shipStatusInfo.shipCollisionRadius;
-        speed = Torpedo.LaunchSpeed;
-        explosionRadius = Torpedo.ExplosionRadius;
         asteroidList = SensorsController.asteroidList;
 
 
@@ -50,20 +48,19 @@ public class EventHorizonDefenceController : AbstractDefenceController
                     targetedAsteroids.Remove(data.id);
                 continue;
             }
-            // float collisionTime = timeToCollide(data);
-            AsteroidData target = data;
-            // TODO: Get target direction vector
-            (Vector2 direction, float time) = getTargetVector(target);
-            if (shootTorpedoes(turretControls, direction, time)) {
-                targetedAsteroids.Add(data.id, time);
+            float collisionTime = timeToCollide(data);
+            if (collisionTime <= 5) {
+                AsteroidData target = data;
+                (Vector2 direction, float time) = getTargetVector(target);
+                if (shootTorpedoes(turretControls, direction, time)) {
+                    targetedAsteroids.Add(data.id, time);
+                }
+                break;
             }
-            break;
         }
     }
 
     /*
-        Author: Jason Yuan
-
         Takes relative position and absolute velocity 
         of the asteroid (because absolute position doesn't matter).
         Also needs the collisionRadius of the asteroid.
@@ -102,7 +99,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
 
 
                 // If the times are close enough, return the time before collision
-                float tolerance = 0.0001f;
+                float tolerance = 0.001f;
                 
                 if (Mathf.Abs(timeX - timeY) <= tolerance) {
                     return timeX;
@@ -140,7 +137,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
         float componentY = (position.y+velocity.y*time)/time;
 
         Vector2 direction = new Vector2(componentX, componentY);
-        return (direction, time);
+        return (direction, time - 0.25f);  // Subtract 0.25 to compensate for the explosion radius of the missile
     }
     
     /*
@@ -151,7 +148,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
     {
         turretControls.aimTo = shipCoordinates + relativeDirection;
         int tube = readyTube(turretControls);
-        if (tube == 4)
+        if (tube == 4)  // Return false if all tubes are on cooldown
             return false;
         turretControls.TriggerTube(readyTube(turretControls), fuseTime);
         return true;
@@ -164,13 +161,11 @@ public class EventHorizonDefenceController : AbstractDefenceController
     {
         
         // Loops through tubes to check which one is ready
-        for(int i = 0; i < 4; i++)
-        {
+        for(int i = 0; i < 4; i++) {
             // TurretControls tc = new TurretControls();
             float tubeCooldown = turretControls.GetTubeCooldown(i);
             // GD.Print(tubeCooldown); 
-            if(tubeCooldown == 0)
-            {
+            if(tubeCooldown == 0) {
                 return i; 
             }
         }
