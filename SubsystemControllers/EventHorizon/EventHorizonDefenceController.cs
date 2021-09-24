@@ -122,6 +122,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
     {
         Vector2 position = data.position;
         Vector2 velocity = data.velocity;
+        // Calculate dot products of position and velocity vectors, etc.
         float pv = position.Dot(velocity);
         float vv = velocity.Dot(velocity);
         float pp = position.Dot(position);
@@ -138,7 +139,6 @@ public class EventHorizonDefenceController : AbstractDefenceController
         float componentX = (position.x+velocity.x*time)/time;
         float componentY = (position.y+velocity.y*time)/time;
 
-        // Now calculate the velocity vector given speed and angle.
         Vector2 direction = new Vector2(componentX, componentY);
         return (direction, time);
     }
