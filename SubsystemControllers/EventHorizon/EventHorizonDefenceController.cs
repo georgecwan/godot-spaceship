@@ -84,8 +84,8 @@ public class EventHorizonDefenceController : AbstractDefenceController
         for (float a = 0; a < 2 * Mathf.Pi; a += 0.1f) {
             // Break down x and y components of the asteroid's position vector,
             // for every rotation around the collision circle
-            float asteroidX = position.x + collisionRadius * Mathf.Cos(a);
-            float asteroidY = position.y + collisionRadius * Mathf.Sin(a);
+            float asteroidX = (position.x + collisionRadius) * Mathf.Cos(a);
+            float asteroidY = (position.y + collisionRadius) * Mathf.Sin(a);
 
             for (float b = 0; b < 2 * Mathf.Pi; b += 0.1f) {
                 // Break down x and y components of the ships's position vector (center = 0,0),
@@ -137,7 +137,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
         float componentY = (position.y+velocity.y*time)/time;
 
         Vector2 direction = new Vector2(componentX, componentY);
-        return (direction, time - 0.25f);  // Subtract 0.25 to compensate for the explosion radius of the missile
+        return (direction, time);
     }
     
     /*
