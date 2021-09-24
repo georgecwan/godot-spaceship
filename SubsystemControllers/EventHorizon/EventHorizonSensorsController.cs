@@ -32,7 +32,7 @@ public class EventHorizonSensorsController : AbstractSensorsController
 			// Calculate the distance of the asteroid relative to the spaceship
 			float dist = (float)Math.Sqrt(Math.Pow(x, 2) + Math.Pow(y, 2));
 			
-			AsteroidData newAsteroid = new AsteroidData(new Vector2(x, y), a.Velocity, a.Radius, dist);
+			AsteroidData newAsteroid = new AsteroidData(a.ContactID, new Vector2(x, y), a.Velocity, a.Radius, dist);
 
 			// Sort the asteroids by distance using insertion sort
 			bool flag = false;
@@ -58,12 +58,14 @@ public class EventHorizonSensorsController : AbstractSensorsController
 }
 
 public struct AsteroidData {
+	public ulong id;
 	public Vector2 position;
 	public Vector2 velocity;
 	public float radius;
 	public float distance;
 
-	public AsteroidData(Vector2 p, Vector2 v, float r, float d) {
+	public AsteroidData(ulong id, Vector2 p, Vector2 v, float r, float d) {
+		this.id = id;
 		position = p;
 		velocity = v;
 		radius = r;
