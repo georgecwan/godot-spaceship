@@ -24,6 +24,13 @@ public class EventHorizonDefenceController : AbstractDefenceController
     */
     List<AsteroidData> asteroidList;
     
+    /*
+        A dictionary that contains the asteroid id and time remaining before it blows up
+        This is used to keep track of which asteroids have already been shot at
+        to prevent all turrets shooting the same asteroid.
+    */
+    Dictionary<ulong, float> targetedAsteroids = new Dictionary<ulong, float>();
+    
     public override void DefenceUpdate(ShipStatusInfo shipStatusInfo, TurretControls turretControls, float deltaTime)
     {
         // Initialize global variables
@@ -34,17 +41,22 @@ public class EventHorizonDefenceController : AbstractDefenceController
         explosionRadius = Torpedo.ExplosionRadius;
         asteroidList = SensorsController.asteroidList;
 
-        // Initialize with useless data
-        AsteroidData target;
-
 
         // TODO: create prioritization algorithm to calculate next shot
         foreach (AsteroidData data in asteroidList) {
+            if (targetedAsteroids.TryGetValue(data.id, out float remainingTime)) {
+                remainingTime -= deltaTime;
+                if (remainingTime <= 0)
+                    targetedAsteroids.Remove(data.id);
+                continue;
+            }
             // float collisionTime = timeToCollide(data);
-            target = data;
+            AsteroidData target = data;
             // TODO: Get target direction vector
             (Vector2 direction, float time) = getTargetVector(target);
-            shootTorpedoes(turretControls, direction, time);
+            if (shootTorpedoes(turretControls, direction, time)) {
+                targetedAsteroids.Add(data.id, time);
+            }
             break;
         }
     }
@@ -133,11 +145,16 @@ public class EventHorizonDefenceController : AbstractDefenceController
     
     /*
         Fires a single torpedo towards the given relative direction with the given time.
+        Returns false if the turret tubes are all on cooldown.
     */
-    public void shootTorpedoes(TurretControls turretControls, Vector2 relativeDirection, float fuseTime) 
+    public bool shootTorpedoes(TurretControls turretControls, Vector2 relativeDirection, float fuseTime) 
     {
-        turretControls.aimTo = shipCoordinates + relativeDirection;  // Aiming in random directions
-        turretControls.TriggerTube(readyTube(turretControls), fuseTime); // Change time to collide
+        turretControls.aimTo = shipCoordinates + relativeDirection;
+        int tube = readyTube(turretControls);
+        if (tube == 4)
+            return false;
+        turretControls.TriggerTube(readyTube(turretControls), fuseTime);
+        return true;
     }
     
     /*
