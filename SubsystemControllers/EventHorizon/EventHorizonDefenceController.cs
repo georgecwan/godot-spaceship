@@ -34,18 +34,19 @@ public class EventHorizonDefenceController : AbstractDefenceController
         explosionRadius = Torpedo.ExplosionRadius;
         asteroidList = SensorsController.asteroidList;
 
+        // Initialize with useless data
         AsteroidData target;
+
+
         // TODO: create prioritization algorithm to calculate next shot
         foreach (AsteroidData data in asteroidList) {
-            float collisionTime = timeToCollide(data);
-            // target = data
+            // float collisionTime = timeToCollide(data);
+            target = data;
+            // TODO: Get target direction vector
+            (Vector2 direction, float time) = getTargetVector(target);
+            shootTorpedoes(turretControls, direction, time);
+            break;
         }
-
-        // TODO: Get target direction vector
-        // Currently set to a random direction
-        (Vector2 direction, float time) = getTargetVector(null);
-
-        shootTorpedoes(turretControls, direction, time);
     }
 
     /*
@@ -105,11 +106,28 @@ public class EventHorizonDefenceController : AbstractDefenceController
         velocity to calculate the next target vector for the turret,
         relative to the turret, and the time it takes before it hits.
     */
-    public (Vector2, float) getTargetVector(AsteroidData? data)
+    public (Vector2, float) getTargetVector(AsteroidData data)
     {
-        Random random = new System.Random();
-        Vector2 direction = new Vector2((float) (random.NextDouble() - 0.5), (float) (random.NextDouble() - 0.5));
-        float time = (float) random.NextDouble() * 10;
+        Vector2 position = data.position;
+        Vector2 velocity = data.velocity;
+        float pv = position.Dot(velocity);
+        float vv = velocity.Dot(velocity);
+        float pp = position.Dot(position);
+        float vm2 = speed * speed;
+
+        // Using a quadratic formula to solve for time.
+        // If it's negative, use the other root.
+        float time = (-pv+Mathf.Sqrt(pv*pv-(vv-vm2)*pp))/(vv-vm2);
+        if (time < 0) {
+            time = (-pv-Mathf.Sqrt(pv*pv-(vv-vm2)*pp))/(vv-vm2);
+        }
+
+        // Sub time back into direction to solve for the components.
+        float componentX = (position.x+velocity.x*time)/time;
+        float componentY = (position.y+velocity.y*time)/time;
+
+        // Now calculate the velocity vector given speed and angle.
+        Vector2 direction = new Vector2(componentX, componentY);
         return (direction, time);
     }
     
@@ -120,7 +138,6 @@ public class EventHorizonDefenceController : AbstractDefenceController
     {
         turretControls.aimTo = shipCoordinates + relativeDirection;  // Aiming in random directions
         turretControls.TriggerTube(readyTube(turretControls), fuseTime); // Change time to collide
-        
     }
     
     /*

@@ -35,7 +35,7 @@ public class EventHorizonSensorsController : AbstractSensorsController
 
 		// 
 		try {
-		GD.Print(asteroidList.Count);
+		// GD.Print(asteroidList.Count);
 		} catch {}
 		
 	}
