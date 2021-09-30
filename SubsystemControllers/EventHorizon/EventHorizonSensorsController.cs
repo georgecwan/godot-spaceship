@@ -15,9 +15,11 @@ public class EventHorizonSensorsController : AbstractSensorsController
 	public override void SensorsUpdate(ShipStatusInfo shipStatusInfo, IActiveSensors activeSensors, PassiveSensors passiveSensors, float deltaTime)
 	{
 		asteroidList.Clear();
-		//Student code goes here  
-		float angle = Mathf.Atan2(shipStatusInfo.linearVelocity.y, shipStatusInfo.linearVelocity.x);
-		 
+		//Student code goes here   
+
+		Vector2 shipVelocity = shipStatusInfo.linearVelocity;
+		float angle = (float) Math.Atan2(shipVelocity.y, shipVelocity.x);
+
 		asteroidRawData = activeSensors.PerformScan(angle, Mathf.Pi/2, 200);
 
 		// Calculate the position of the asteroid relative to the spaceship
