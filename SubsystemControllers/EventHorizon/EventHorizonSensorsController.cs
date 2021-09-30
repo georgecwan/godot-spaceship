@@ -9,6 +9,12 @@ public class EventHorizonSensorsController : AbstractSensorsController
 	EventHorizonPropulsionController PropulsionController {get{return parentShip.PropulsionController as EventHorizonPropulsionController;}}    
 	EventHorizonDefenceController DefenceController {get{return parentShip.DefenceController as EventHorizonDefenceController;}}
 
+	Vector2 shipVelocity;
+	Vector2 shipPosition;
+
+	float scanAngle;
+	float scanDistance;
+
 	public List<EMSReading> asteroidRawData = new List<EMSReading>(); 
 	public List<AsteroidData> asteroidList = new List<AsteroidData>();
 
@@ -17,15 +23,19 @@ public class EventHorizonSensorsController : AbstractSensorsController
 		asteroidList.Clear();
 		//Student code goes here   
 
-		Vector2 shipVelocity = shipStatusInfo.linearVelocity;
+		shipVelocity = shipStatusInfo.linearVelocity;
+		shipPosition = shipStatusInfo.positionWithinSystem;
+
 		float angle = (float) Math.Atan2(shipVelocity.y, shipVelocity.x);
 		
+		scanAngle = Mathf.Clamp(Mathf.Pi/(shipVelocity.Length()/100.0f), Mathf.Pi/4, Mathf.Pi); // Scales the scan angle based on the ship's velocity.
+		scanDistance = Mathf.Clamp(shipVelocity.Length(), 0, 400); // Scales the scan distance based off of the ship's velocity. Clamps between (100, 300)
+
 		asteroidRawData = activeSensors.PerformScan(
 			angle, 
-			Mathf.Clamp(Mathf.Pi/(shipVelocity.Length()/100.0f), 0, Mathf.Pi), 
-			Mathf.Clamp(shipVelocity.Length()*2, 0, 300)
+			scanAngle, 
+			scanDistance
 		);
-
 		// Calculate the position of the asteroid relative to the spaceship
 
 
@@ -61,9 +71,26 @@ public class EventHorizonSensorsController : AbstractSensorsController
 
 	public override void DebugDraw(Font font)
 	{
-		//Student code goes here
+		Vector2 shipDirection = shipVelocity.Normalized();
+		
+		// Draw debug lines for the ship's scan distance and angle
+		//DrawLine(shipPosition, shipPosition + (scanDistance * shipDirection), Color.ColorN("green"), 5f);
+		DrawLine(shipPosition, shipPosition + scanDistance * rotateVector(shipDirection, -scanAngle/2.0f), Color.ColorN("green"), 5f);
+		DrawLine(shipPosition, shipPosition + scanDistance * rotateVector(shipDirection, scanAngle/2.0f), Color.ColorN("green"), 5f);
+
 	}
-}
+
+	//Rotate a vector by a given angle
+	Vector2 rotateVector(Vector2 initial, float angle) {
+		Vector2 result;
+		
+		result.x = initial.x * Mathf.Cos(angle) - initial.y * Mathf.Sin(angle);
+		result.y = initial.x * Mathf.Sin(angle) + initial.y * Mathf.Cos(angle);
+
+		return result;
+	}
+};
+
 
 public struct AsteroidData {
 	public ulong id;
