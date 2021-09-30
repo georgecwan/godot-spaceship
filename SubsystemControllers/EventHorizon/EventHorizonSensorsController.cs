@@ -19,8 +19,12 @@ public class EventHorizonSensorsController : AbstractSensorsController
 
 		Vector2 shipVelocity = shipStatusInfo.linearVelocity;
 		float angle = (float) Math.Atan2(shipVelocity.y, shipVelocity.x);
-
-		asteroidRawData = activeSensors.PerformScan(angle, Mathf.Pi/2, 200);
+		
+		asteroidRawData = activeSensors.PerformScan(
+			angle, 
+			Mathf.Clamp(Mathf.Pi/(shipVelocity.Length()/100.0f), 0, Mathf.Pi), 
+			Mathf.Clamp(shipVelocity.Length()*2, 0, 300)
+		);
 
 		// Calculate the position of the asteroid relative to the spaceship
 
