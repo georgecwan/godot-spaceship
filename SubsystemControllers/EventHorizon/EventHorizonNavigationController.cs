@@ -11,6 +11,7 @@ public class EventHorizonNavigationController : AbstractNavigationController
     public override void NavigationUpdate(ShipStatusInfo shipStatusInfo, GalaxyMapData galaxyMapData, float deltaTime)
     {
         //Student code goes here
+        Console.Write("Galaxy data:" + galaxyMapData.nodeData[0].edges[0].edgeCost + "\n");
         
         //position of the ship
         Vector2 shipPosition = shipStatusInfo.positionWithinSystem;
@@ -40,7 +41,14 @@ public class EventHorizonNavigationController : AbstractNavigationController
 
             shipStatusInfo.forwardVector = shortestPath;
         }
-    }   
+    }
+
+    public static int[] djikstra(GalaxyMapData galaxyMapData, string solarSystemName)
+    {
+       // foreach ()
+
+        return new int[0];
+    }
 
     public override void DebugDraw(Font font)
     {

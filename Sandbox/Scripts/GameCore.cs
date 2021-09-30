@@ -7,7 +7,7 @@ public class GameCore : Node
 	//Exports
 	[Export] SimulationMode simulationMode = SimulationMode.Alpha;
 	//[Export] string startFocusedOnShipName = "Nostromo";
-	[Export] ShipNames startFocusedOnShip = ShipNames.Nostromo;
+	[Export] ShipNames startFocusedOnShip = ShipNames.EventHorizon;
 	[Export] ulong galaxySeed = 0;
 
 	//Internal
