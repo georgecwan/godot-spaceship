@@ -41,11 +41,51 @@ public class EventHorizonNavigationController : AbstractNavigationController
 
             shipStatusInfo.forwardVector = shortestPath;
         }
+
+        djikstra(galaxyMapData);
     }
 
-    public static int[] djikstra(GalaxyMapData galaxyMapData, string solarSystemName)
+    public static int[] djikstra(GalaxyMapData galaxyMapData)
     {
-       // foreach ()
+        int numberSystems = galaxyMapData.nodeData.Length;
+
+        string[] unvisited = new string[numberSystems];
+
+        for (int i = 0; i < numberSystems; ++i)
+        {
+            unvisited[i] = galaxyMapData.nodeData[i].systemName;
+        }
+
+        List<int> visited = new List<int>();
+
+        int[] shortestDistance = new int[numberSystems];
+
+        for (int i = 0; i < numberSystems; ++i)
+        {
+            if (unvisited[i] == SolarSystemNames.Sol)
+            {
+                shortestDistance[i] = 0;
+            }
+            else
+            {
+                shortestDistance[i] = int.MaxValue;
+            }
+        }
+
+        string[] previousNode = new string[numberSystems];
+
+        for (int i = 0; i < numberSystems; ++i)
+        {
+            previousNode[i] = null;
+        }
+
+        // while (unvisited.Length != 0)
+        // {
+        //     string u = unvisited[shortestDistance.FindIndex]
+        // }
+
+        Console.WriteLine("systems: " + string.Join(",", unvisited));
+        Console.WriteLine("shortest:" + string.Join(",", shortestDistance));
 
         return new int[0];
     }
