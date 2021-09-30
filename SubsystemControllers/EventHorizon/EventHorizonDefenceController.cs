@@ -162,9 +162,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
         
         // Loops through tubes to check which one is ready
         for(int i = 0; i < 4; i++) {
-            // TurretControls tc = new TurretControls();
             float tubeCooldown = turretControls.GetTubeCooldown(i);
-            // GD.Print(tubeCooldown); 
             if(tubeCooldown == 0) {
                 return i; 
             }
