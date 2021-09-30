@@ -11,13 +11,15 @@ public class EventHorizonSensorsController : AbstractSensorsController
     public List<EMSReading> smallSpaceObjects = new List<EMSReading>();
     public List<PassiveSensorReading> bigSpaceObjects = new List<PassiveSensorReading>();
     public List<float> warpGateHeadings = new List<float>();
+    public WarpGateData solSystemWarpGate = new WarpGateData("WarpGate to Alpha Centauri System", new Vector2( (float)800,(float)0 ), "Alpha Centauri System");
+    public WarpGateData alphaCentauriSystemWarpGate = new WarpGateData("WarpGate to Kepler 438 System", new Vector2( (float)312.978, (float)386.366 ), "Kepler 438 System");
 
     public override void SensorsUpdate(ShipStatusInfo shipStatusInfo, IActiveSensors activeSensors, PassiveSensors passiveSensors, float deltaTime)
     {
 
         // HARD CODED DATA FOR GALAXY ALPHA:
-        WarpGateData solSystemWarpGate = new WarpGateData("WarpGate to Alpha Centauri System", new Vector2( (float)800,(float)0 ), "Alpha Centauri System");
-        WarpGateData alphaCentauriSystemWarpGate = new WarpGateData("WarpGate to Kepler 438 System", new Vector2( (float)312.978, (float)386.366 ), "Kepler 438 System");
+        // WarpGateData solSystemWarpGate = new WarpGateData("WarpGate to Alpha Centauri System", new Vector2( (float)800,(float)0 ), "Alpha Centauri System");
+        // WarpGateData alphaCentauriSystemWarpGate = new WarpGateData("WarpGate to Kepler 438 System", new Vector2( (float)312.978, (float)386.366 ), "Kepler 438 System");
 
         GD.Print("WARP GATE DATA: \n");
         GD.Print("Name: " + solSystemWarpGate.name + ". Destination: " + solSystemWarpGate.destinationSolarSystemName.ToString() + ". Position: " + solSystemWarpGate.position.ToString() + ".");
