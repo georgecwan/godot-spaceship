@@ -29,7 +29,7 @@ public class EventHorizonSensorsController : AbstractSensorsController
 		float angle = (float) Math.Atan2(shipVelocity.y, shipVelocity.x);
 		
 		scanAngle = Mathf.Clamp(Mathf.Pi/(shipVelocity.Length()/100.0f), Mathf.Pi/4, Mathf.Pi); // Scales the scan angle based on the ship's velocity.
-		scanDistance = Mathf.Clamp(shipVelocity.Length(), 0, 400); // Scales the scan distance based off of the ship's velocity. Clamps between (100, 300)
+		scanDistance = Mathf.Clamp(shipVelocity.Length()+50, 50, 300); // Scales the scan distance based off of the ship's velocity. Clamps between (100, 300)
 
 		asteroidRawData = activeSensors.PerformScan(
 			angle, 
@@ -74,7 +74,7 @@ public class EventHorizonSensorsController : AbstractSensorsController
 		Vector2 shipDirection = shipVelocity.Normalized();
 		
 		// Draw debug lines for the ship's scan distance and angle
-		//DrawLine(shipPosition, shipPosition + (scanDistance * shipDirection), Color.ColorN("green"), 5f);
+		DrawLine(shipPosition, shipPosition + (scanDistance * shipDirection), Color.ColorN("green"), 5f);
 		DrawLine(shipPosition, shipPosition + scanDistance * rotateVector(shipDirection, -scanAngle/2.0f), Color.ColorN("green"), 5f);
 		DrawLine(shipPosition, shipPosition + scanDistance * rotateVector(shipDirection, scanAngle/2.0f), Color.ColorN("green"), 5f);
 
