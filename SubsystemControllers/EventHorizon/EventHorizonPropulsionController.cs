@@ -15,6 +15,7 @@ public class EventHorizonPropulsionController : AbstractPropulsionController
 		// Set the velocity as the displacement from the target
 		Vector2 velocity = shipStatusInfo.forwardVector;
 		thrusters.UFODriveVelocity = velocity;
+		
 	}
 
 	public override void DebugDraw(Font font)
