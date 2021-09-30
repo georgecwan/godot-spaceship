@@ -101,7 +101,7 @@ public class EventHorizonDefenceController : AbstractDefenceController
                 // If the times are close enough, return the time before collision
                 float tolerance = 0.001f;
                 
-                if (Mathf.Abs(timeX - timeY) <= tolerance) {
+                if (Mathf.Abs(timeX - timeY) <= tolerance && timeX > 0) {
                     return timeX;
                 }
             }
