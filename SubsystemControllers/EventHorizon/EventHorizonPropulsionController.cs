@@ -9,12 +9,11 @@ public class EventHorizonPropulsionController : AbstractPropulsionController
 
 	public override void PropulsionUpdate(ShipStatusInfo shipStatusInfo, ThrusterControls thrusters, float deltaTime)
 	{
-		//Student code goes here
 
-		//Enable the UFO drive override
+		// Enable the UFO drive override
 		thrusters.IsUFODriveEnabled = true;
-		//fly down and to the right at a speed of 141 pixels per second
-		Vector2 velocity = new Vector2(100, 100);
+		// Set the velocity as the displacement from the target
+		Vector2 velocity = shipStatusInfo.forwardVector;
 		thrusters.UFODriveVelocity = velocity;
 	}
 
