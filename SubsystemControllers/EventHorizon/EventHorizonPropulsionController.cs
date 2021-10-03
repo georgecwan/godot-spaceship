@@ -15,9 +15,10 @@ public class EventHorizonPropulsionController : AbstractPropulsionController
 		// Set the velocity as the displacement from the target
 		thrusters.UFODriveVelocity = shipStatusInfo.forwardVector;
 
-		// Enter warp gate when we are close enough to the gate (This assumes we are travelling to a gate :x)
+		// Activate sequence whenever we get close enough to the destination
 		if(isInRange(shipStatusInfo.forwardVector, shipStatusInfo.shipCollisionRadius)){
 			thrusters.TriggerWarpJump();
+			thrusters.TriggerLandingSequence();
 		}
 		//Vector2 linearVelocity = shipStatusInfo.linearVelocity;
 		//translationUpdate(shipStatusInfo, thrusters);
