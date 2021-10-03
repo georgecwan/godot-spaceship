@@ -40,6 +40,18 @@ public class EventHorizonNavigationController : AbstractNavigationController
 
             shipStatusInfo.forwardVector = shortestPath;
         }
+        else if (shipStatusInfo.currentSystemName == SolarSystemNames.Kepler438)
+        {
+            //go to the planet
+
+            //position of the planet
+            Vector2 planetPosition = new Vector2( (float)1276.38, (float)107.665 );
+
+            //shortest path
+            Vector2 shortestPath = new Vector2(planetPosition.x - shipPosition.x, planetPosition.y - shipPosition.y);
+
+            shipStatusInfo.forwardVector = shortestPath;
+        }
     }   
 
     public override void DebugDraw(Font font)
