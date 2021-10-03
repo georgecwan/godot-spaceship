@@ -14,6 +14,9 @@ public class EventHorizonSensorsController : AbstractSensorsController
 
     public List<PassiveSensorReadingData> passiveSensorReadingData = new List<PassiveSensorReadingData>();
     public List<EMSReading> planetRawData = new List<EMSReading>();
+    public List<EMSReading> warpGateRawData = new List<EMSReading>();
+    public List<PlanetData> planetList = new List<PlanetData>();
+    public List<WarpGateData> warpGateList = new List<WarpGateData>();
 
     public override void SensorsUpdate(ShipStatusInfo shipStatusInfo, IActiveSensors activeSensors, PassiveSensors passiveSensors, float deltaTime)
     {
@@ -38,12 +41,23 @@ public class EventHorizonSensorsController : AbstractSensorsController
             GD.Print("\nContact ID: " + newPassiveSensorReadingData.contactID.ToString() + ". Adjusted Heading: " + newPassiveSensorReadingData.heading.ToString() + "\n");
 
             if(passiveSensorReading.Signature.ToString() == "Planetoid") {
+                GD.Print("inside for if 1\n");
                 planetRawData = activeSensors.PerformScan(
                     adjustedHeading,
                     scanAngle,
                     scanDistance
                 );
             }
+
+            if(passiveSensorReading.Signature.ToString() == "WarpGate") {
+                GD.Print("inside for if 2\n");
+                warpGateRawData = activeSensors.PerformScan(
+                    adjustedHeading,
+                    scanAngle,
+                    scanDistance
+                );
+            }
+
             // bigSpaceObjects = activeSensors.PerformScan(
                 
             // )
@@ -54,6 +68,33 @@ public class EventHorizonSensorsController : AbstractSensorsController
             // GD.Print(passiveSensorReading.Signature.ToString() + "  " + passiveSensorReading.Heading.ToString());
 
         }
+
+        foreach(EMSReading a in planetRawData) {
+			GD.Print("inside for loop 1\n");
+			// Calculate the position of the planet in cartesian coordinates
+			float x = (float)Math.Cos(a.Angle) * a.Amplitude * activeSensors.GConstant;
+			float y = (float)Math.Sin(a.Angle) * a.Amplitude * activeSensors.GConstant;
+			
+			PlanetData newPlanet = new PlanetData("planet", new Vector2(x, y)); // TODO: pass additional composition information needed
+
+            planetList.Add(newPlanet);
+
+		}
+
+        foreach(EMSReading a in warpGateRawData) {
+			GD.Print("inside for loop 2\n");
+			// Calculate the position of the planet in cartesian coordinates
+			float x = (float)Math.Cos(a.Angle) * a.Amplitude * activeSensors.GConstant;
+			float y = (float)Math.Sin(a.Angle) * a.Amplitude * activeSensors.GConstant;
+			
+            GD.Print("x " + x.ToString() + " y " + y.ToString());
+
+			WarpGateData newWarpGate = new WarpGateData("warp gate", new Vector2(x, y), "destination"); // TODO: pass additional composition information needed
+
+            warpGateList.Add(newWarpGate);
+
+		}
+
 
         foreach(EMSReading planetData in planetRawData) {
             GD.Print("scan signature: " + planetData.ScanSignature);
